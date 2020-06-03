@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "Jumpy Bird",
+    "description": "Placeholder",
+    "imagePath": "./assets/img/portfolio/jumpy-bird.jpg",
+    "repositoryUrl": "https://github.com/arsha2000/JumpyBird"
+  },
+  {
+    "id": 2,
+    "title": "Website Clones",
+    "description": "Placholder",
+    "imagePath": "./assets/img/portfolio/website-clones.png",
+    "repositoryUrl": "https://github.com/arsha2000/Website-Clones"
+  }
+]

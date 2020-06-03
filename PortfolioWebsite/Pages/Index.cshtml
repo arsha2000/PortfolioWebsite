@@ -1,0 +1,96 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Portfolio";
+}
+
+
+<header class="masthead bg-primary text-white text-center" style="padding-top: 136px;padding-bottom: 89px;">
+    <div class="container d-lg-inline-flex align-items-lg-end align-items-xl-center">
+        <img class="img-fluid border rounded-circle border-primary shadow m-auto mb-5" alt="Arsha Hassas's Portrait" title="Arsha" srcset="assets/img/profile.png 1x, assets/img/profile@2x.png 2x" width="50%" style="max-width: 300px;">
+        <div style="margin-top: 30px;">
+            <h1 class="display-1">Mohammad Hassas</h1>
+            <hr class="star-light">
+            <h2 class="font-weight-light mb-0">Business Student - Web/iOS Developer - Content Creator</h2>
+        </div>
+    </div>
+</header>
+<section id="portfolio" class="portfolio">
+    <div class="container">
+        <h2 class="text-uppercase text-center text-secondary">Portfolio</h2>
+        <hr class="star-dark mb-5">
+        <div class="row">
+            @foreach (var item in Model.PortfolioItems)
+            {
+                <div class="col-md-6 col-lg-4 d-flex justify-content-center align-items-center" style="/*border-radius: 10px;*/">
+                    <a class="border rounded d-block mx-auto portfolio-item" href="@item.RepositoryUrl">
+                        <div class="border rounded d-flex portfolio-item-caption position-absolute h-100 w-100" style="border-radius: 10px;">
+                            <div class="my-auto portfolio-item-caption-content w-100 text-center text-white"><i class="fa fa-search-plus fa-3x"></i></div>
+                        </div><img class="img-fluid d-flex" src="@item.ImagePath" style="/*border-radius: 10px;*/" alt="Jumpy Bird Image">
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<section id="about" class="bg-primary text-white mb-0">
+    <div class="container">
+        <h2 class="text-uppercase text-center text-white">About</h2>
+        <hr class="star-light mb-5">
+        <div class="row">
+            <div class="col-lg-4 ml-auto">
+                <p class="lead">I am a programmer/tech enthusiast from Denizli, Turkey. I study business at Pamukkale University. I characterize myself as a highly motivated person with a passion for technology and content creation.</p>
+            </div>
+            <div class="col-lg-4 mr-auto">
+                <p class="lead">I started progromming at 17 and I'm experienced with iOS programming.&nbsp; I have interest in web development using various technologies such as ASP.Net Core and Vapor.</p>
+            </div>
+        </div>
+        <div class="text-center mt-4"><a class="btn btn-outline-light btn-xl" role="button" href="#"><i class="fa fa-download mr-2"></i><span>Download Now!</span></a></div>
+    </div>
+</section>
+<section id="contact">
+    <div class="container">
+        <h2 class="text-uppercase text-center text-secondary mb-0">Contact Me</h2>
+        <hr class="star-dark mb-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                            <label asp-for="Contact.Name"></label>
+                            <input asp-for="Contact.Name" class="form-control" type="text" id="name" required="" placeholder="Name">
+                            <span asp-validation-for="Contact.Name" class="form-text text-danger help-block"></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                            <label asp-for="Contact.Email"></label>
+                            <input asp-for="Contact.Email" class="form-control" type="email" id="email" required="" placeholder="Email Address">
+                            <span asp-validation-for="Contact.Email" class="form-text text-danger help-block"></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                        <label asp-for="Contact.PhoneNumber"></label>
+                        <input asp-for="Contact.PhoneNumber" class="form-control" type="tel" id="phone" required="" placeholder="Phone Number">
+                        <span asp-validation-for="Contact.PhoneNumber" class="form-text text-danger help-block"></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls mb-5 pb-2">
+                        <textarea asp-for="Contact.Message" class="form-control" id="message" required="" placeholder="Message" rows="5"></textarea>
+                        <span asp-validation-for="Contact.Message" class="form-text text-danger help-block"></span>
+                        </div>
+                    </div>
+                    <div id="success"></div>
+                    <div class="form-group"><button class="btn btn-primary btn-xl" id="sendMessageButton" type="submit">Send</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
