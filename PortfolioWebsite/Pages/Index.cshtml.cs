@@ -49,7 +49,8 @@ namespace PortfolioWebsite.Pages
             // send the email in the background without waiting for the operation to finish
             Mailer.SendEmailAsync("mohammadhassas@hotmail.com", "Mohammad Hassas", "Portfolio Website - Contact", Contact.ToHTML())
                 .ConfigureAwait(false);
-
+            Mailer.SendEmailAsync(Contact.Email, Contact.Name, "Arsha.dev", "<h1>Thank you</h1><p>I'll be in contact shortly.</p>");
+            
             return RedirectToPage("Index");
         }
     }
