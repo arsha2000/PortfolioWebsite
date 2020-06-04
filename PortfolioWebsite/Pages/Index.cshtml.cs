@@ -16,16 +16,14 @@ namespace PortfolioWebsite.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly JSONFileManager<PortfolioItem> PortfolioManager;
-        private readonly JSONFileManager<Contact> ContactManager;
         private readonly IMailer Mailer;
 
         public List<PortfolioItem> PortfolioItems { get; private set; }
 
-        public IndexModel(ILogger<IndexModel> logger, JSONFileManager<PortfolioItem> portfolioManager, JSONFileManager<Contact> contactManager, IMailer mailer)
+        public IndexModel(ILogger<IndexModel> logger, JSONFileManager<PortfolioItem> portfolioManager, IMailer mailer)
         {
             _logger = logger;
             PortfolioManager = portfolioManager;
-            ContactManager = contactManager;
             Mailer = mailer;
         }
 
@@ -47,8 +45,6 @@ namespace PortfolioWebsite.Pages
             {
                 return Page();
             }
-
-            ContactManager.WriteToFile("contacts.json", new List<Contact> { Contact });
 
             // send the email in the background without waiting for the operation to finish
             Mailer.SendEmailAsync("mohammadhassas@hotmail.com", "Mohammad Hassas", "Portfolio Website - Contact", Contact.ToHTML())

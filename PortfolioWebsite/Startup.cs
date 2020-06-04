@@ -29,7 +29,6 @@ namespace PortfolioWebsite
             services.AddRazorPages();
 
             // File System Service
-            services.AddScoped<JSONFileManager<Contact>>();
             services.AddScoped<JSONFileManager<PortfolioItem>>();
 
             // Mail Services
