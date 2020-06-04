@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 namespace PortfolioWebsite.Models
 {
     public class Contact
@@ -20,5 +21,14 @@ namespace PortfolioWebsite.Models
         [Required]
         public string Message { get; set; }
 
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+
+        public string toHTML()
+        {
+
+        }
     }
 }

@@ -17,14 +17,16 @@ namespace PortfolioWebsite.Pages
         private readonly ILogger<IndexModel> _logger;
         private JSONFileManager<PortfolioItem> PortfolioManager;
         private JSONFileManager<Contact> ContactManager;
+        private IMailer Mailer;
 
         public List<PortfolioItem> PortfolioItems { get; private set; }
 
-        public IndexModel(ILogger<IndexModel> logger, JSONFileManager<PortfolioItem> portfolioManager, JSONFileManager<Contact> contactManager)
+        public IndexModel(ILogger<IndexModel> logger, JSONFileManager<PortfolioItem> portfolioManager, JSONFileManager<Contact> contactManager, IMailer mailer)
         {
             _logger = logger;
-            this.PortfolioManager = portfolioManager;
+            PortfolioManager = portfolioManager;
             ContactManager = contactManager;
+            Mailer = mailer;
         }
 
         public async Task<IActionResult> OnGet()
@@ -32,13 +34,14 @@ namespace PortfolioWebsite.Pages
             var allItems = await PortfolioManager.ReadAllAsync("portfolioItems.json");
             PortfolioItems = allItems.ToList();
 
+            
             return Page();
         }
 
         [BindProperty]
         public Contact Contact { get; set; }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
             {
@@ -46,6 +49,7 @@ namespace PortfolioWebsite.Pages
             }
 
             ContactManager.WriteToFile("contacts.json", new List<Contact> { Contact });
+            await Mailer.SendEmailAsync("mohammadhassas@hotmail.com", "Mohammad Hassas", "Portfolio Website - Contact", Contact.ToString());
 
             return RedirectToPage("Index");
         }

@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PortfolioWebsite.Services;
 using PortfolioWebsite.Models;
+using PortfolioWebsite.Entities;
 
 namespace PortfolioWebsite
 {
@@ -26,8 +27,15 @@ namespace PortfolioWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+
+            // File System Service
             services.AddScoped<JSONFileManager<Contact>>();
             services.AddScoped<JSONFileManager<PortfolioItem>>();
+
+            // Mail Services
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.AddSingleton<IMailer, Mailer>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
