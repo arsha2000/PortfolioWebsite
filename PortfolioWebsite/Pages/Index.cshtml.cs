@@ -15,9 +15,9 @@ namespace PortfolioWebsite.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private JSONFileManager<PortfolioItem> PortfolioManager;
-        private JSONFileManager<Contact> ContactManager;
-        private IMailer Mailer;
+        private readonly JSONFileManager<PortfolioItem> PortfolioManager;
+        private readonly JSONFileManager<Contact> ContactManager;
+        private readonly IMailer Mailer;
 
         public List<PortfolioItem> PortfolioItems { get; private set; }
 
