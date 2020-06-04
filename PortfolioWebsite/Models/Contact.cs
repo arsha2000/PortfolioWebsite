@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
+
 namespace PortfolioWebsite.Models
 {
     public class Contact
@@ -26,9 +27,18 @@ namespace PortfolioWebsite.Models
             return JsonSerializer.Serialize(this);
         }
 
-        public string toHTML()
+        public string ToHTML()
         {
+            string html = @$"
+<h2>Name</h2><span>{Name}</span>
+<h2>Email</h2><span>{Email}</span>
+<h2>Phone Number</h2><span>{PhoneNumber}</span>
+<h2>Message: </h2><p>{Message}</p>
+";
+            
 
+
+            return html;
         }
     }
 }

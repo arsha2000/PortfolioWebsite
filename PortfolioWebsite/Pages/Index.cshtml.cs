@@ -41,7 +41,7 @@ namespace PortfolioWebsite.Pages
         [BindProperty]
         public Contact Contact { get; set; }
 
-        public async Task<IActionResult> OnPost()
+        public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
             {
@@ -49,7 +49,10 @@ namespace PortfolioWebsite.Pages
             }
 
             ContactManager.WriteToFile("contacts.json", new List<Contact> { Contact });
-            await Mailer.SendEmailAsync("mohammadhassas@hotmail.com", "Mohammad Hassas", "Portfolio Website - Contact", Contact.ToString());
+
+            // send the email in the background without waiting for the operation to finish
+            Mailer.SendEmailAsync("mohammadhassas@hotmail.com", "Mohammad Hassas", "Portfolio Website - Contact", Contact.ToHTML())
+                .ConfigureAwait(false);
 
             return RedirectToPage("Index");
         }
