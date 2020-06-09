@@ -44,9 +44,10 @@ namespace PortfolioWebsite.Services
                 };
 
 
-                using var client = new SmtpClient();
-
-                client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                using SmtpClient client = new SmtpClient
+                {
+                    ServerCertificateValidationCallback = (s, c, h, e) => true
+                };
 
                 if (_env.IsDevelopment())
                 {
