@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using PortfolioWebsite.Entities;
 using MailKit.Net.Smtp;
 using MimeKit;
@@ -17,13 +18,16 @@ namespace PortfolioWebsite.Services
     public class Mailer : IMailer
     {
 
+        private readonly ILogger<Mailer> _logger;
         private readonly SmtpSettings _smtpSettings;
         private readonly IWebHostEnvironment _env;
 
-        public Mailer(IOptions<SmtpSettings> smtpOptions, IWebHostEnvironment env)
+        public Mailer(ILogger<Mailer> logger, IOptions<SmtpSettings> smtpOptions, IWebHostEnvironment env)
         {
+            _logger = logger;
             _smtpSettings = smtpOptions.Value;
             _env = env;
+           
         }
 
         public async Task SendEmailAsync(string email, string name, string subject, string body)
@@ -40,9 +44,10 @@ namespace PortfolioWebsite.Services
                 };
 
 
-                using var client = new SmtpClient();
-
-                client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                using SmtpClient client = new SmtpClient
+                {
+                    ServerCertificateValidationCallback = (s, c, h, e) => true
+                };
 
                 if (_env.IsDevelopment())
                 {
@@ -58,6 +63,7 @@ namespace PortfolioWebsite.Services
 
             } catch (Exception e)
             {
+                _logger.Log(LogLevel.Error, e.Message);
                 throw new InvalidOperationException(e.Message);
             }
         }

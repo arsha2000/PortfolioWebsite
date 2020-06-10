@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,11 +24,12 @@ namespace PortfolioWebsite
             services.AddRazorPages();
 
             // File System Service
-            services.AddScoped<JSONFileManager<Contact>>();
+            services.AddScoped<FileManager>();
             services.AddScoped<JSONFileManager<PortfolioItem>>();
 
             // Mail Services
             services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.Configure<SupportEmailSettings>(Configuration.GetSection("SupportEmailSettings"));
             services.AddSingleton<IMailer, Mailer>();
 
         }
