@@ -24,10 +24,12 @@ namespace PortfolioWebsite
             services.AddRazorPages();
 
             // File System Service
+            services.AddScoped<FileManager>();
             services.AddScoped<JSONFileManager<PortfolioItem>>();
 
             // Mail Services
             services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.Configure<SupportEmailSettings>(Configuration.GetSection("SupportEmailSettings"));
             services.AddSingleton<IMailer, Mailer>();
 
         }
