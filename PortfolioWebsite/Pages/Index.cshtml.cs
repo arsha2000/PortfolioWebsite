@@ -64,7 +64,7 @@ namespace PortfolioWebsite.Pages
                 Contact.ToHTML());
 
             //email to the client
-            string thankYouBody = await PortfolioManager.FileManager.ReadFileAsTextAsync("thankYou.html");
+            string thankYouBody = await PortfolioManager.FileManager.ReadFileAsTextAsync("thankYou.txt");
             await Mailer.SendEmailAsync(Contact.Email, Contact.Name, "Thank You - Arsha.Dev", thankYouBody);
 
             _logger.Log(LogLevel.Information, "Sent email to the client and the support email");
