@@ -1,0 +1,38 @@
+﻿@model PortfolioWebsite.Models.Contact
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Email</title>
+    <style>
+        body {
+            font-family: Calibri, sans-serif;
+            font-size: 11pt;
+            color: #555;
+        }
+
+        blockquote {
+            border-left: 8px solid #cceeaa;
+            font-size: 12pt;
+            margin: 0;
+            padding: 30px 60px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contact Form</h1>
+    <p>@Model.Name sent a message via the contact form at @DateTime.Now as follows:</p>
+    <blockquote>@Model.Message</blockquote>
+    <p>
+        @Model.Name is using the email address @Model.Email and
+        @if (Model.PhoneNumber != null)
+        { 
+            <span>and has provided their phone number: @Model.PhoneNumber</span>
+        }
+    </p>
+</body>
+</html>

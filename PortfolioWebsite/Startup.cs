@@ -23,6 +23,9 @@ namespace PortfolioWebsite
         {
             services.AddRazorPages();
 
+            // Rendering
+            services.AddTransient<IRazorPartialToStringRenderer, RazorPartialToStringRenderer>();
+
             // File System Service
             services.AddScoped<FileManager>();
             services.AddScoped<JSONFileManager<PortfolioItem>>();
