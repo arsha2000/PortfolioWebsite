@@ -18,6 +18,7 @@ namespace PortfolioWebsite.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly SupportEmailSettings _supportEmailSettings;
+        private readonly IRazorPartialToStringRenderer RazorRenderer;
         private readonly JSONFileManager<PortfolioItem> PortfolioManager;
         private readonly IMailer Mailer;
 
@@ -26,20 +27,29 @@ namespace PortfolioWebsite.Pages
         public IndexModel(
             ILogger<IndexModel> logger,
             IOptions<SupportEmailSettings> supportEmailSettings,
+            IRazorPartialToStringRenderer razorRenderer,
             JSONFileManager<PortfolioItem> portfolioManager,
             IMailer mailer)
         {
             _logger = logger;
+            _supportEmailSettings = supportEmailSettings.Value;
+
+            RazorRenderer = razorRenderer;
             PortfolioManager = portfolioManager;
             Mailer = mailer;
-            _supportEmailSettings = supportEmailSettings.Value;
         }
 
         public async Task<IActionResult> OnGet()
         {
-            var allItems = await PortfolioManager.ReadAllAsync("portfolioItems.json");
-            PortfolioItems = allItems.ToList();
-
+            try
+            {
+                var allItems = await PortfolioManager.ReadAllAsync("portfolioItems.json");
+                PortfolioItems = allItems.ToList();
+            } catch (Exception e)
+            {
+                PortfolioItems = new List<PortfolioItem>();
+                _logger.Log(LogLevel.Error, $"Reading Portfolio items failed: {e.Message}");
+            }
             
             return Page();
         }
@@ -47,27 +57,36 @@ namespace PortfolioWebsite.Pages
         [BindProperty]
         public Contact Contact { get; set; }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            
+            try
+            {
+                // email to support email
+                string supportEmailBody = await RazorRenderer.RenderPartialToStringAsync("_SupportEmailTemplate", Contact);
+                await Mailer.SendEmailAsync(
+                    _supportEmailSettings.SupportEmailAddress,
+                    _supportEmailSettings.AdministratorName,
+                    "Client Information - Arsha.Dev",
+                    supportEmailBody);
+                
 
-            // email to support email
-            await Mailer.SendEmailAsync(
-                _supportEmailSettings.SupportEmailAddress,
-                _supportEmailSettings.AdministratorName,
-                "Client Information - Arsha.Dev",
-                Contact.ToHTML());
+                _logger.Log(LogLevel.Information, $"Sent email to the support email");
 
-            //email to the client
-            string thankYouBody = await PortfolioManager.FileManager.ReadFileAsTextAsync("thankYou.txt");
-            await Mailer.SendEmailAsync(Contact.Email, Contact.Name, "Thank You - Arsha.Dev", thankYouBody);
+                //email to the client
+                string thankYouBody = await RazorRenderer.RenderPartialToStringAsync("_ThankYou", Contact);
+                await Mailer.SendEmailAsync(Contact.Email, Contact.Name, "Thank You - Arsha.Dev", thankYouBody);
 
-            _logger.Log(LogLevel.Information, "Sent email to the client and the support email");
+                _logger.Log(LogLevel.Information, "Sent email to the client email");
+
+            } catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, $"Email operation failed: {e.Message}");
+            }
 
             return RedirectToPage("Index");
         }

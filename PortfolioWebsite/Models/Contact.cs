@@ -21,24 +21,5 @@ namespace PortfolioWebsite.Models
 
         [Required]
         public string Message { get; set; }
-
-        public override string ToString()
-        {
-            return JsonSerializer.Serialize(this);
-        }
-
-        public string ToHTML()
-        {
-            string html = @$"
-<h2>Name</h2><span>{Name}</span>
-<h2>Email</h2><span>{Email}</span>
-<h2>Phone Number</h2><span>{PhoneNumber}</span>
-<h2>Message: </h2><p>{Message}</p>
-";
-            
-
-
-            return html;
-        }
     }
 }
