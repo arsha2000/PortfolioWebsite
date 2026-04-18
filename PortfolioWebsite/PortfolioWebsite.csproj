@@ -14,8 +14,8 @@
     <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="2.7.0" />
-    <PackageReference Include="MimeKit" Version="2.8.0" />
+    <PackageReference Include="MailKit" Version="4.16.0" />
+    <PackageReference Include="MimeKit" Version="4.16.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Entities\SmtpSettings.cs" />
